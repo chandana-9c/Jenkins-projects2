@@ -1,1 +1,0 @@
-print('Jenkins Declarative Example')
