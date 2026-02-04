@@ -11,7 +11,7 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                dir('some-folder') {
+                dir('jenkins02-docker-ecr') {
                     sh 'docker build -t demo-app:latest .'
                 }
             }
