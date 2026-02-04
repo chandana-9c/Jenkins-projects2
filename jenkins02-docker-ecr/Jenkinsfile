@@ -12,8 +12,9 @@ pipeline {
 
         stage('Checkout Code') {
             steps {
-            	git branch: 'main', git 'https://github.com/chandana-9c/Jenkins-projects2.git'
-            } // mention branch also, or else jenkins will search for master branch by default
+            	git branch: 'main', url: 'https://github.com/chandana-9c/Jenkins-projects2'
+				
+            } // mention branch also, or else jenkins will search for master branch by default. and mention 'url' not 'git'
         }
 
         stage('Login to ECR') {
