@@ -1,0 +1,38 @@
+pipeline {
+    agent any
+    environment {
+        // Replace with your AWS account ID, region, and repository name
+        ECR_REGISTRY = '712257475373.dkr.ecr.ap-southeast-2.amazonaws.com' 
+        IMAGE_NAME = 'my-application-image'
+        // This ID must match the credential ID configured in Jenkins
+        AWS_CREDENTIALS_ID = 'aws-ecr-jenkins-creds' 
+    }
+    stages {
+        stage('Login to ECR') {
+            steps {
+                script {
+                    // Authenticate with ECR using AWS credentials stored in Jenkins
+                    docker.withRegistry("https://${ECR_REGISTRY}", AWS_CREDENTIALS_ID) {
+                        sh 'echo "Logged in to ECR"' // Simple check
+                    }
+                }
+            }
+        }
+
+        stage('Build and Push Docker Image') {
+            steps {
+                script {
+                    def image
+                    // Use the docker pipeline plugin's build method
+                    image = docker.build("${ECR_REGISTRY}/${IMAGE_NAME}:${env.BUILD_ID}")
+
+                    // Push the image with two tags: the build ID and 'latest'
+                    docker.withRegistry("https://${ECR_REGISTRY}", AWS_CREDENTIALS_ID) {
+                        image.push("${env.BUILD_ID}")
+                        image.push("latest")
+                    }
+                }
+            }
+        }
+    }
+}
