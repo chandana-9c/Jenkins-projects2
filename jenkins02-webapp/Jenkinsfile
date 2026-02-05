@@ -25,6 +25,8 @@ pipeline {
         stage('Test') {
             steps {
                 // Simple test example: check if index.html exists
+                sh 'sudo cp jenkins02-webapp/index.html /var/www/html/index.html'
+                echo 'sodo executed'
                 sh 'test -f jenkins02-webapp/index.html'
             }
         }
