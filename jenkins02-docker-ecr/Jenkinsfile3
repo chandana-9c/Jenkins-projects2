@@ -4,7 +4,7 @@ pipeline {
 //    environment {
 //        AWS_REGION = 'us-east-1'  
 //        ECR_REPO = '123456789012.dkr.ecr.us-east-1.amazonaws.com/my-app'
-//        IMAGE_TAG = "${env.BUILD_NUMBER}"
+//        IMAGE_TAG = "${BUILD_NUMBER}"
 //}
             environment {
         // Replace with your AWS account ID, region, and repository name
@@ -95,7 +95,7 @@ pipeline {
       stage('Build Docker Image') {
       steps {
 	echo "Building Docker image..."
-	sh 'docker build -t tagname-test01:latest jenkins02-docker-ecr' // added 'jenkins02-docker-ecr' - mentioning folder inside repo/dir  insted - of '.' - for current directory
+	sh 'docker build -t ${ECR_REPO}:${IMAGE_TAG} jenkins02-docker-ecr' // added 'jenkins02-docker-ecr' - mentioning folder inside repo/dir  insted - of '.' - for current directory
       } 
 }
 
