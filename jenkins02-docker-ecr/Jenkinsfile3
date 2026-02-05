@@ -79,17 +79,25 @@ pipeline {
  //           }
  //       }
         
-         stage('Build Docker Image') {
-            steps {
+ //        stage('Build Docker Image') {
+ //           steps {
  //               dir("${PROJECT_DIR}") {
-                    sh '''
-                    docker build -t $ECR_REPO .
-                    docker tag $ECR_REPO:latest \
-                    $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO:latest
-                    '''
+ //                   sh '''
+ //                   docker build -t $ECR_REPO .
+ //                   docker tag $ECR_REPO:latest \
+ //                   $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO:latest
+ //                   '''
   //              }
-            }
-        }
+  //          }
+  //      }
+
+
+      stage('Build Docker Image') {
+      steps {
+	echo "Building Docker image..."
+	sh 'docker build -t tagname-test01:latest jenkins02-docker-ecr' // added 'jenkins02-docker-ecr' - mentioning folder inside repo/dir  insted - of '.' - for current directory
+      } 
+}
 
 
 
