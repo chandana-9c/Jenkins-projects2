@@ -12,6 +12,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 git branch: 'main', url: 'https://github.com/chandana-9c/Jenkins-projects2'
+                
             }
         }
 
@@ -22,15 +23,29 @@ pipeline {
             }
         }
 
-        stage('Test') {
+/*        stage('Test') {
             steps {
                 // Simple test example: check if index.html exists
-                sh 'sudo cp jenkins02-webapp/index.html /var/www/html/index.html'
+
                 echo 'sodo executed'
                 sh 'test -f jenkins02-webapp/index.html'
             }
         }
+*/
+        stage('Test') {
+            steps {
+                script {
+                    // Ensure index.html exists
+                    if (!fileExists("${APP_FOLDER}/index.html")) {
+                        error "index.html not found in ${APP_FOLDER}"
+                    }
+                    echo "index.html found in ${APP_FOLDER}"
+                }
+            }
+        }
 
+
+        
         stage('Deploy') {
             steps {
                 sshagent(['ec2-ssh-key-jenkinskey']) { // Jenkins credential ID
