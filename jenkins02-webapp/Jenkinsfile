@@ -5,6 +5,7 @@ pipeline {
         DEPLOY_USER = "ubuntu"                 // EC2 username
         DEPLOY_HOST = "34.204.183.61"       // Replace with your EC2 IP
         DEPLOY_PATH =  "/var/www/html"     //fot ubuntu - /var/www/html, for linux2-/usr/share/nginx/html"    // Path to Nginx web folder
+        APP_FOLDER = "jenkins02-webapp"  // folder containing index.html    
     }
 
 
