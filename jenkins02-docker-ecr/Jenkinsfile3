@@ -3,7 +3,7 @@ pipeline {
 
 //    environment {
 //        AWS_REGION = 'us-east-1'  
-//        ECR_REPO = '123456789012.dkr.ecr.us-east-1.amazonaws.com/my-app'
+//        ECR_REPO = '123456789012.dkr.ecr.us-east-1.amazonaws.com/devops-demo'
 //        IMAGE_TAG = "${BUILD_NUMBER}"
 //}
             environment {
@@ -13,7 +13,7 @@ pipeline {
         // This ID must match the credential ID configured in Jenkins
         AWS_CREDENTIALS_ID = 'aws-ecr-jenkins-creds' 
         AWS_REGION = "ap-southeast-2"
-        ECR_REPO   = "demo-app"
+      //  ECR_REPO   = "demo-app"
         AWS_ACCOUNT_ID = "712257475373"
         PROJECT_DIR ="jenkins02-docker-ecr"
     
