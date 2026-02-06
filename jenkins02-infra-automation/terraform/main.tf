@@ -28,6 +28,15 @@ resource "aws_instance" "demo_ec2" {
   instance_type          = var.instance_type
   security_groups        = [aws_security_group.jenkins_sg.name]
 
+# installe nginx and enable
+  user_data = <<-EOF
+              #!/bin/bash
+              apt-get update
+              apt-get install -y nginx
+              systemctl start nginx
+              systemctl enable nginx
+              EOF
+
   tags = {
     Name = "Terraform-Jenkins-EC2"
   }
