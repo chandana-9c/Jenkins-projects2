@@ -23,7 +23,7 @@ pipeline {
                  dir('jenkins02-infra-automation/terraform') {
                 withCredentials([[
                     $class: 'AmazonWebServicesCredentialsBinding',
-                    credentialsId: 'AWSCred'    // user defined/added cred id in jenkins browsers-> credentials- aws-ecr-jenkins-creds
+                    credentialsId: 'AwsCred'    // user defined/added cred id in jenkins browsers-> credentials- aws-ecr-jenkins-creds(Install AWS credentials plug in in Jenkins console(browser) + then add 'AWS Credtials' type credentials )
                 ]])  {
                         sh 'terraform plan'
                         sh 'terraform apply -auto-approve'
