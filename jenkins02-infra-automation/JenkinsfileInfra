@@ -20,14 +20,12 @@ pipeline {
 
         stage('Terraform Plan') {
             steps {
-
+                 dir('jenkins02-infra-automation/terraform') {
                 withCredentials([[
                     $class: 'AmazonWebServicesCredentialsBinding',
                     credentialsId: 'AWSCred'    // user defined/added cred id in jenkins browsers-> credentials- aws-ecr-jenkins-creds
                 ]])
 
-
-                 dir('jenkins02-infra-automation/terraform') {
                     sh 'terraform plan'
                     sh 'terraform apply -auto-approve'
                 }
