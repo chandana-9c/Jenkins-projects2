@@ -12,15 +12,15 @@ pipeline {
 
         stage('Terraform Initialize') {
             steps {
-                dir('terraform') {	// mention dir('terraform') if terraform files are inside fol called terrraform
+                dir('jenkins02-infra-automation/terraform') {	// mention dir('terraform') if terraform files are inside fol called terrraform
                     sh 'terraform init'
-                }
+                }// now mention dir('jenkins02-infra-automation/terraform') if terraform files are inside fol called terraform which is inside fol called jenkins02-infra-automation
             }
         }
 
         stage('Terraform Plan') {
             steps {
-                 dir('terraform') {
+                 dir('jenkins02-infra-automation/terraform') {
                     sh 'terraform plan'
                 }
             }
@@ -28,7 +28,7 @@ pipeline {
 
         stage('Terraform Apply') {
             steps {
-                dir('terraform') {
+                dir('jenkins02-infra-automation/terraform') {
                     sh 'terraform apply -auto-approve'
                 }
                 // sh 'terraform apply -auto-approve'
