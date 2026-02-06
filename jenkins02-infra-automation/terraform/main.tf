@@ -31,10 +31,10 @@ resource "aws_instance" "demo_ec2" {
 # installe nginx and enable
   user_data = <<-EOF
               #!/bin/bash
-              apt-get update
-              apt-get install -y nginx
-              systemctl start nginx
-              systemctl enable nginx
+              sudo apt-get update
+              sudo apt-get install -y nginx
+              sudo systemctl start nginx
+              sudo systemctl enable nginx
               EOF
 
   tags = {
