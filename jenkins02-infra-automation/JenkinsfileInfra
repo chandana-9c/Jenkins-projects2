@@ -24,10 +24,9 @@ pipeline {
                 withCredentials([[
                     $class: 'AmazonWebServicesCredentialsBinding',
                     credentialsId: 'AWSCred'    // user defined/added cred id in jenkins browsers-> credentials- aws-ecr-jenkins-creds
-                ]])
-
-                    sh 'terraform plan'
-                    sh 'terraform apply -auto-approve'
+                ]])  {
+                        sh 'terraform plan'
+                        sh 'terraform apply -auto-approve'
                 }
             }
         }
