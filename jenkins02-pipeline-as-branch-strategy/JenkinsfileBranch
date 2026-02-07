@@ -8,14 +8,14 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: "${env.BRANCH_NAME}", url: 'https://github.com/chandana-9c/Jenkins-projects2'
+                git branch: "${params.BRANCH}", url: 'https://github.com/chandana-9c/Jenkins-projects2'
             }
         }
 
         stage('Build') {
             steps {
                 script {
-                    echo "Building ${APP_NAME} on branch ${env.BRANCH_NAME}"
+                    echo "Building ${APP_NAME} on branch ${params.BRANCH}"
                     sh 'echo "Simulating Build - Build" > build.log'
                 }
             }
@@ -24,7 +24,7 @@ pipeline {
         stage('Test') {
             steps {
                 script {
-                    echo "Running tests for branch ${env.BRANCH_NAME}"
+                    echo "Running tests for branch ${params.BRANCH}"
                     sh 'echo "Simulating Tests - Test" >> build.log'
                 }
             }
@@ -36,7 +36,7 @@ pipeline {
             }
             steps {
                 script {
-                    echo "Deploying ${APP_NAME} from ${env.BRANCH_NAME} to Production"
+                    echo "Deploying ${APP_NAME} from ${params.BRANCH} to Production"
                     sh 'echo "Simulating Deployment - Deploy" >> build.log'
                 }
             }
@@ -46,7 +46,7 @@ pipeline {
     post {
         always {
             archiveArtifacts artifacts: 'build.log', allowEmptyArchive: true
-            echo "Pipeline completed for ${env.BRANCH_NAME}"
+            echo "Pipeline completed for ${params.BRANCH}"
         }
     }
 }
