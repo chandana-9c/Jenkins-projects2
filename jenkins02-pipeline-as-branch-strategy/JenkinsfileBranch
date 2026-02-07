@@ -31,9 +31,13 @@ pipeline {
         }
 
         stage('Deploy') {
-            when {
-                branch 'main'
+/*            when {
+                branch 'main'      // when used evn.BRANCH
             }
+*/
+    when {
+        expression { params.BRANCH == 'main' }
+    }
             steps {
                 script {
                     echo "Deploying ${APP_NAME} from ${params.BRANCH} to Production"
