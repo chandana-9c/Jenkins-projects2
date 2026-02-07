@@ -1,0 +1,70 @@
+pipeline {
+    agent any
+
+    environment {
+        DEPLOY_USER = "ubuntu"                 // EC2 username
+        DEPLOY_HOST = "34.204.183.61"       // Replace with your EC2 IP
+        DEPLOY_PATH =  "/var/www/html"     //fot ubuntu - /var/www/html, for linux2-/usr/share/nginx/html"    // Path to Nginx web folder
+        APP_FOLDER = "jenkins02-webapp"  // folder containing index.html    
+    }
+
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main', url: 'https://github.com/chandana-9c/Jenkins-projects2'
+                
+            }
+        }
+
+        stage('Build') {
+            steps {
+                // For static web app, build is optional
+                echo 'Building the app (if needed)'
+            }
+        }
+
+/*        stage('Test') {
+            steps {
+                // Simple test example: check if index.html exists
+
+                echo 'sodo executed'
+                sh 'test -f jenkins02-webapp/index.html'
+            }
+        }
+*/
+        stage('Test') {
+            steps {
+                script {
+                    // Ensure index.html exists
+                    if (!fileExists("${APP_FOLDER}/index.html")) {
+                        error "index.html not found in ${APP_FOLDER}"
+                    }
+                    echo "index.html found in ${APP_FOLDER}"
+                }
+            }
+        }
+
+
+        
+        stage('Deploy') {
+            steps {
+                sshagent(['ec2-ssh-key-jenkinskey']) { // Jenkins credential ID
+                    sh """
+                    ssh -o StrictHostKeyChecking=no $DEPLOY_USER@$DEPLOY_HOST 'mkdir -p $DEPLOY_PATH'
+                    rsync -avz --delete ./ $DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH/
+                    """
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'CI/CD Pipeline executed successfully!'
+        }
+        failure {
+            echo 'Pipeline failed.'
+        }
+    }
+}

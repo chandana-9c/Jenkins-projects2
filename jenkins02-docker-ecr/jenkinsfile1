@@ -1,0 +1,49 @@
+pipeline {
+    agent any
+
+    environment {
+        AWS_REGION = "ap-southeast-2"
+        ECR_REPO   = "demo-app"
+        ACCOUNT_ID = "712257475373"
+    }
+
+    stages {
+
+        stage('Build Docker Image') {
+            steps {
+                dir('jenkins02-docker-ecr') {
+                    sh 'docker build -t demo-app:latest .'
+                }
+            }
+        }
+
+        stage('Login to ECR') {
+            steps {
+                withCredentials([[
+                    $class: 'AmazonWebServicesCredentialsBinding',
+                    credentialsId: 'aws-ecr-jenkins-creds'    // user defined/added cred id in jenkins browsers-> credentials- aws-ecr-jenkins-creds
+                ]]) {
+                    sh '''
+                    aws ecr get-login-password --region $AWS_REGION \
+                    | docker login --username AWS --password-stdin \
+                    $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
+                    '''
+                }
+            }
+        }
+
+        stage('Push Image to ECR') {
+            steps {
+                dir('some-folder') {
+                    sh '''
+                    docker tag demo-app:latest \
+                    $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO:latest
+
+                    docker push \
+                    $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO:latest
+                    '''
+                }
+            }
+        }
+    }
+}
